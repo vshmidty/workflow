@@ -1,1 +1,4 @@
 node_modules
+*.mtar
+gen
+apps/resources

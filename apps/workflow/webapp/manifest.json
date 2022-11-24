@@ -12,11 +12,10 @@
         "resources": "resources.json",
         "dataSources": {
             "mainService": {
-                "uri": "northwind",
+                "uri": "workflow-srv/book/",
                 "type": "OData",
                 "settings": {
-                    "odataVersion": "2.0",
-                    "localUri": "localService/metadata.xml"
+                    "odataVersion": "4.0"
                 }
             }
         },
@@ -84,9 +83,16 @@
                     "bundleName": "workflow.i18n.i18n"
                 }
             },
-            "": {
+            "mainService": {
                 "dataSource": "mainService",
-                "preload": true
+                "type": "sap.ui.model.odata.v4.ODataModel",
+                "preload": true,
+                "settings": {
+                    "synchronizationMode": "None",
+                    "operationMode": "Server",
+                    "autoExpandSelect": true,
+                    "groupId": "$auto"
+                  }
             }
         },
         "routing": {
@@ -94,50 +100,19 @@
                 "routerClass": "sap.f.routing.Router",
                 "viewType": "XML",
                 "viewPath": "workflow.view",
-                "controlId": "layout",
-                "controlAggregation": "beginColumnPages",
-                "bypassed": {
-                    "target": "notFound"
-                },
+                "controlId": "app",
+                "controlAggregation": "pages",
                 "async": true
             },
             "routes": [
                 {
                     "pattern": "",
-                    "name": "master",
-                    "target": "master"
-                },
-                {
-                    "pattern": "Customers/{objectId}",
-                    "name": "object",
-                    "target": [
-                        "master",
-                        "object"
-                    ]
-                }
-            ],
-            "targets": {
-                "master": {
-                    "viewName": "Master",
-                    "viewLevel": 1,
-                    "viewId": "master"
-                },
-                "object": {
-                    "viewName": "Detail",
-                    "viewId": "detail",
-                    "viewLevel": 1,
-                    "controlAggregation": "midColumnPages"
-                },
-                "detailObjectNotFound": {
-                    "viewName": "DetailObjectNotFound",
-                    "viewId": "detailObjectNotFound",
-                    "controlAggregation": "midColumnPages"
-                },
-                "notFound": {
-                    "viewName": "NotFound",
-                    "viewId": "notFound"
-                }
-            }
+                    "name": "info",
+                    "viewType": "XML",
+                    "view": "Info"
+                  }
+                ]
+            
         }
     },
     "sap.cloud": {

@@ -7,7 +7,38 @@ parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
 
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm install
+    - npx -p @sap/cds-dk cds build --production
+
 modules:
+  - name: db-deployer
+    type: hdb
+    path: gen/db
+    requires:
+    - name: workflow-hdi
+    - name: workflow-uaa
+    parameters:
+      buildpack: nodejs_buildpack
+
+  - name: workflow-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+    - name: workflow-hdi
+    - name: workflow-uaa
+    provides:
+    - name: srv-api
+      properties:
+        srv-url: ${default-url}
+    parameters:
+      buildpack: nodejs_buildpack
+      disk-quota: 1024M
+      memory: 256M
+
   - name: workflow-dest-content
     type: com.sap.application.content
     requires:
@@ -52,7 +83,7 @@ modules:
         - name: workflow
           artifacts:
             - workflow.zip
-          target-path: resources/
+          target-path: ../apps/resources
 
   - name: workflow
     type: html5
@@ -65,6 +96,14 @@ modules:
         - npm run build:cf
       supported-platforms: [ ]
 resources:
+  - name: workflow-hdi
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+    properties:
+      hdi-service-name: ${service-name}
+
   - name: workflow-dest-srv
     type: org.cloudfoundry.managed-service
     parameters:
@@ -73,16 +112,19 @@ resources:
         init_data:
           instance:
             destinations:
-              - Name: northwind
+              - Name: workflow-srv
                 Authentication: NoAuthentication
+                ForwardAuthToken: true
                 ProxyType: Internet
                 Type: HTTP
-                URL: https://services.odata.org/V3/Northwind/Northwind.svc/
+                URL: ~{srv-api/srv-url}
             existing_destinations_policy: update
         version: 1.0.0
       service: destination
       service-name: workflow-dest-srv
       service-plan: lite
+    requires:
+    - name: srv-api
 
   - name: workflow-uaa
     type: org.cloudfoundry.managed-service
