@@ -1,11 +1,11 @@
 {
-    "name": "simple.app.mta",
+    "name": "workflow",
     "version": "0.0.1",
     "private": true,
     "scripts": {
         "deploy": "fiori cfDeploy",
         "build:mta": "rimraf resources mta_archives && mbt build --mtar archive",
-        "undeploy": "cf undeploy btp-samples-simple-app --delete-services --delete-service-keys"
+        "undeploy": "cf undeploy workflow --delete-services --delete-service-keys"
     },
     "devDependencies": {
         "rimraf": "3.0.2",

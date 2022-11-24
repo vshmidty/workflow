@@ -1,5 +1,5 @@
 {
-  "xsappname": "btpsamplessimpleapp",
+  "xsappname": "workflow",
   "tenant-mode": "dedicated",
   "description": "Security profile of called application",
   "scopes": [
