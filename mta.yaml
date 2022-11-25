@@ -79,6 +79,18 @@ modules:
     - npm install
     - npm run build:cf
     supported-platforms: []
+- name: workflow-workflow
+  type: com.sap.application.content
+  path: workflow
+  requires:
+    - name: workflow-wf
+      parameters:
+        content-target: true
+        service-key:
+          config:
+            deployUsageScenario: workflow
+          name: workflow-service-key
+
 resources:
 - name: workflow-hdi
   type: com.sap.xs.hdi-container
@@ -93,6 +105,13 @@ resources:
     config:
       HTML5Runtime_enabled: true
       init_data:
+        subaccount:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
         instance:
           destinations:
           - Authentication: NoAuthentication
@@ -121,6 +140,11 @@ resources:
     service: html5-apps-repo
     service-name: workflow-repo-host
     service-plan: app-host
+- name: workflow-wf
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: workflow
+    service-plan: lite
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
