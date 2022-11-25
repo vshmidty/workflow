@@ -44,12 +44,12 @@ modules:
       instance:
         destinations:
         - Name: workflow_repo_host
-          ServiceInstanceName: workflow-html5-srv
+          ServiceInstanceName: workflow-repo-host
           ServiceKeyName: workflow-repo-host-key
           sap.cloud.service: workflow
         - Authentication: OAuth2UserTokenExchange
           Name: workflow_uaa
-          ServiceInstanceName: workflow-xsuaa-srv
+          ServiceInstanceName: workflow-uaa
           ServiceKeyName: workflow-uaa-key
           sap.cloud.service: workflow
         existing_destinations_policy: ignore
@@ -113,13 +113,13 @@ resources:
   parameters:
     path: ./xs-security.json
     service: xsuaa
-    service-name: workflow-xsuaa-srv
+    service-name: workflow-uaa
     service-plan: application
 - name: workflow-repo-host
   type: org.cloudfoundry.managed-service
   parameters:
     service: html5-apps-repo
-    service-name: workflow-html5-srv
+    service-name: workflow-repo-host
     service-plan: app-host
 parameters:
   deploy_mode: html5-repo
