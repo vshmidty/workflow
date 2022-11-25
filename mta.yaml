@@ -67,7 +67,7 @@ modules:
     requires:
     - artifacts:
       - workflow.zip
-      name: workflow
+      name: workflow-ui
       target-path: ../apps/resources
 - name: workflow-ui
   type: html5
