@@ -3,7 +3,7 @@ ID: workflow
 description: Workflow app within Launchpad service
 version: 0.0.1
 modules:
-- name: db-deployer
+- name: workflow-db
   type: hdb
   path: gen/db
   requires:
@@ -25,10 +25,10 @@ modules:
     buildpack: nodejs_buildpack
     disk-quota: 1024M
     memory: 256M
-- name: workflow-dest-content
+- name: workflow-router
   type: com.sap.application.content
   requires:
-  - name: workflow-dest-srv
+  - name: workflow-router-destination
     parameters:
       content-target: true
   - name: workflow-repo-host
@@ -55,7 +55,7 @@ modules:
         existing_destinations_policy: ignore
   build-parameters:
     no-source: true
-- name: workflow-app-content
+- name: workflow-fiori
   type: com.sap.application.content
   path: apps
   requires:
@@ -69,7 +69,7 @@ modules:
       - workflow.zip
       name: workflow
       target-path: ../apps/resources
-- name: workflow
+- name: workflow-ui
   type: html5
   path: apps/workflow
   build-parameters:
@@ -87,7 +87,7 @@ resources:
     service-plan: hdi-shared
   properties:
     hdi-service-name: ${service-name}
-- name: workflow-dest-srv
+- name: workflow-router-destination
   type: org.cloudfoundry.managed-service
   parameters:
     config:
@@ -104,7 +104,7 @@ resources:
           existing_destinations_policy: update
       version: 1.0.0
     service: destination
-    service-name: workflow-dest-srv
+    service-name: workflow-router-destination
     service-plan: lite
   requires:
   - name: srv-api
