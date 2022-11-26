@@ -17,6 +17,7 @@ modules:
   requires:
   - name: workflow-hdi
   - name: workflow-uaa
+  - name: workflow-starter-service
   provides:
   - name: srv-api
     properties:
@@ -72,6 +73,30 @@ modules:
 - name: workflow-ui
   type: html5
   path: apps/workflow
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+- name: workflow-fiori-starter
+  type: com.sap.application.content
+  path: app
+  requires:
+  - name: workflow-repo-host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - workflow-starter.zip
+      name: workflow-ui-starter
+      target-path: ../app/resources
+- name: workflow-ui-starter
+  type: html5
+  path: app/workflow-starter
   build-parameters:
     build-result: dist
     builder: custom
@@ -145,6 +170,13 @@ resources:
   parameters:
     service: workflow
     service-plan: lite
+- name: workflow-starter-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: workflow
+    service-plan: lite
+    config:
+      authorities: ["WORKFLOW_INSTANCE_START","WORKFLOW_INSTANCE_GET"]
 parameters:
   deploy_mode: html5-repo
   enable-parallel-deployments: true
