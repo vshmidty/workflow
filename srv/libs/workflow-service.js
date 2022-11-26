@@ -46,12 +46,18 @@ class WorkflowService extends cds.ApplicationService {
         return each.error(404, "Request not found");
       }
       const header = headers[0];
-      workflowStarter = new WorkflowStarter();
-      workflowStarter.triggerStartEvent(
-        "workflow-starter",
+      if (header.status !== "In Progress") {
+        return each.error(
+          400,
+          "Request can not be processed in status " + header.status
+        );
+      }
+      let workflowStarter = new WorkflowStarter(
+        "workflow-starter-service",
         "namespace.myworkflow",
         { ID: header.ID }
       );
+      workflowStarter.triggerStartEvent();
       let query = UPDATE("Header", header.ID).with({
         status: "In Approval",
       });

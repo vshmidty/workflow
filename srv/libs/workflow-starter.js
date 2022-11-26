@@ -4,11 +4,15 @@ class WorkflowStarter {
   constructor(workflowService, definitionId, context) {
     let vcapServices = JSON.parse(process.env.VCAP_SERVICES);
     // obtain WF service by provided key
-    let workflowServices = json.workflow;
+    let workflowServices = vcapServices.workflow;
     let intendedWorkflowService = workflowServices.find(
-      (workflowServices) => workflowServices.name === workflowService
+      (workflowServiceToCheck) =>
+        workflowServiceToCheck.name === workflowService
     );
-    if (intendedWorkflowService === null) {
+    if (
+      intendedWorkflowService === undefined ||
+      intendedWorkflowService === null
+    ) {
       throw new Error("Workflow service not found");
     }
     this.workflowService = intendedWorkflowService.credentials;
