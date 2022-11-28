@@ -12,7 +12,7 @@
         "resources": "resources.json",
         "dataSources": {
             "mainService": {
-                "uri": "workflow-srv/book/",
+                "uri": "workflow-srv/Header/",
                 "type": "OData",
                 "settings": {
                     "odataVersion": "4.0"

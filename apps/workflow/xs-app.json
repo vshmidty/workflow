@@ -13,19 +13,26 @@
       "destination": "workflow-srv"
     },
     {
-        "source": "^/index.html",
-        "service": "html5-apps-repo-rt",
-        "cacheControl": "no-cache, no-store, must-revalidate"
-    },  
+      "source": "^/index.html",
+      "service": "html5-apps-repo-rt",
+      "cacheControl": "no-cache, no-store, must-revalidate"
+    },
     {
-        "source": "^/logout-page.html$",
-        "service": "html5-apps-repo-rt",
-        "authenticationType": "none"
-    },  
+      "source": "^/logout-page.html$",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "none"
+    },
     {
       "source": "^(.*)$",
       "target": "$1",
       "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/bpmworkflowruntime/(.*)$",
+      "target": "/$1",
+      "service": "com.sap.bpm.workflow",
+      "endpoint": "workflow_rest_url",
       "authenticationType": "xsuaa"
     }
   ]

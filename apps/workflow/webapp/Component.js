@@ -5,8 +5,8 @@ sap.ui.define([
 
 	return UIComponent.extend("workflow.Component", {
 
-		metadata : {
-			manifest : "json"
+		metadata: {
+			manifest: "json"
 		},
 
 		/**
@@ -15,12 +15,10 @@ sap.ui.define([
 		 * @public
 		 * @override
 		 */
-		init : function () {
+		init: function () {
 			// call the base component's init function and create the App view
 			UIComponent.prototype.init.apply(this, arguments);
 
-			// create the views based on the url/hash
-			this.getRouter().initialize();
 		},
 
 		/**
@@ -29,7 +27,7 @@ sap.ui.define([
 		 * @public
 		 * @override
 		 */
-		destroy : function () {
+		destroy: function () {
 			// call the base component's destroy function
 			UIComponent.prototype.destroy.apply(this, arguments);
 		}
